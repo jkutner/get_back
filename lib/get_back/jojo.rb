@@ -14,15 +14,15 @@ module GetBack
 
         # create a new proxy
         old_method = instance_method(method)
-        define_method(gb_method_name) do
-          old_method.bind(self).call
+        define_method(gb_method_name) do |*args|
+          old_method.bind(self).call(*args)
         end
 
         # redefine the method
-        define_method(method) do
+        define_method(method) do |*args|
           e.submit do
             begin
-              r = send(gb_method_name)
+              r = send(gb_method_name, *args)
               if block_given?
                 if block.arity == 1
                   yield self
@@ -31,7 +31,6 @@ module GetBack
                 end
               end
             rescue Exception => ex
-              puts 'ding'
               send(config[:rescue], ex) if config[:rescue]
               raise
             ensure

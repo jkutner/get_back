@@ -52,6 +52,12 @@ class Foo
   def callback0
     @step3 = true
   end
+
+  def do_it_args(a, b, c)
+    sleep(1) until @step1 == true
+    @step2 = a && b && c
+  end
+  get_back :do_it_args
 end
 
 describe Foo do
@@ -59,6 +65,19 @@ describe Foo do
   context "#do_it" do
     it "runs in the background" do
       subject.do_it
+      sleep(2)
+      subject.step1.should be_false
+      subject.step2.should be_false
+      subject.step1 = true
+      sleep(1)
+      subject.step2.should be_true
+      subject.step1.should be_true
+    end
+  end
+
+  context "#do_it_args" do
+    it "runs in the background" do
+      subject.do_it_args(true, true, true)
       sleep(2)
       subject.step1.should be_false
       subject.step2.should be_false
@@ -90,7 +109,7 @@ describe Foo do
       subject.step2.should be_false
       subject.step3.should be_false
       subject.step1 = true
-      sleep(2)
+      sleep(1)
       subject.step2.should be_true
       subject.step1.should be_true
       subject.step3.should be_true
@@ -105,7 +124,7 @@ describe Foo do
       subject.step2.should be_false
       subject.step3.should be_false
       subject.step1 = true
-      sleep(2)
+      sleep(1)
       subject.step2.should be_true
       subject.step1.should be_true
       subject.step3.should be_true
@@ -120,7 +139,7 @@ describe Foo do
       subject.step2.should be_false
       subject.step3.should be_false
       subject.step1 = true
-      sleep(2)
+      sleep(1)
       subject.step2.should be_true
       subject.step1.should be_true
       subject.step3.should be_true
