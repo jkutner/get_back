@@ -14,8 +14,8 @@ it could take too long.  Make it get back!
     class User
       extend GetBack::JoJo
 
-      def send_email
-        puts "Thanks for joining my website"
+      def send_email(action)
+        puts "Thanks for #{action} my website"
       end
 
       get_back :send_email
@@ -29,3 +29,32 @@ concurrency of a method, you can fix the pool size:
 
     get_back :send_email, :pool => 10
 
+You can also specify callbacks for success, rescue, and ensure.  The success callback is just a block thats passed to
+the get_back call:
+
+    get_back :send_email do
+      log.info "email send successfully
+    end
+
+The rescue and ensure callbacks reference other methods
+
+    get_back :send_email, :rescue => :log_bad_email
+
+    def log_bad_email(e) do
+      log.error "something bad happened when we sent an email!"
+    end
+
+Or you can send more email:
+
+    get_back :send_mail, :ensure => :send_spam
+
+    def send_spam
+      send_email("spamming")
+    end
+
+Copyright
+----------
+
+Copyright © 2011 Joe Kutner. Released under the MIT License.
+
+See LICENSE for details.
