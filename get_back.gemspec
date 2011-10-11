@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.date = Time.now
   s.description = "Easy Background Jobs for JRuby"
   s.email = ["jpkutner@gmail.com"]
-  s.files = Dir['{lib,spec}/**/*'] + Dir['{*.md,*.gemspec}']
+  s.files = Dir['{lib,spec}/**/*'] + Dir['{*.md,*.txt,*.gemspec}']
   s.homepage = "http://github.com/jkutner/get_back"
   s.require_paths = ["lib"]
   s.summary = "Easy Background Jobs for JRuby"
