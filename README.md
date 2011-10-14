@@ -22,9 +22,18 @@ it could take too long.  Make it get back!
 
     end
 
-Now the send_email method will *always* run in a separate thread.
+Now the send_email method will *always* run in a separate thread.  For example, this code:
 
-The background methods are run in a separate thread.  The threads a pulled from a pool.  If you need to limit the
+    u = User.new
+    u.send_email("joining")
+    puts 'done'
+
+Might yield this output:
+
+    > done
+    > Thanks for joining my website
+
+The background methods are run in a separate thread, which is pulled from a pool.  If you need to limit the
 concurrency of a method, you can fix the pool size:
 
     get_back :send_email, :pool => 10
